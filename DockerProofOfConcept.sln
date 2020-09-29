@@ -7,9 +7,14 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Docker.Web", "src\Docker.We
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Docker.Worker", "src\Docker.Worker\Docker.Worker.csproj", "{9725C119-E4D1-40D7-9985-5D15ADD89128}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Docker.Data", "src\Docker.Data\Docker.Data.csproj", "{83CF8B49-4A31-4F6D-A814-41BC61DEA16D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Docker.Data", "src\Docker.Data\Docker.Data.csproj", "{83CF8B49-4A31-4F6D-A814-41BC61DEA16D}"
 EndProject
 Project("{E53339B2-1760-4266-BCC7-CA923CBCF16C}") = "docker-compose", "docker-compose.dcproj", "{64531FF4-AF21-4367-947A-8C2D0EE0F78A}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{47DF9A28-7D50-4330-880C-4F2FFDA74AE3}"
+	ProjectSection(SolutionItems) = preProject
+		.editorconfig = .editorconfig
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
