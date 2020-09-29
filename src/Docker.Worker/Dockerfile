@@ -6,6 +6,7 @@ WORKDIR /app
 FROM mcr.microsoft.com/dotnet/sdk:5.0-buster-slim AS build
 WORKDIR /src
 COPY ["src/Docker.Worker/Docker.Worker.csproj", "src/Docker.Worker/"]
+COPY ["src/Docker.Data/Docker.Data.csproj", "src/Docker.Data/"]
 RUN dotnet restore "src/Docker.Worker/Docker.Worker.csproj"
 COPY . .
 WORKDIR "/src/src/Docker.Worker"

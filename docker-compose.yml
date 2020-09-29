@@ -1,0 +1,28 @@
+version: '3.4'
+
+services:
+  docker.worker:
+    image: ${DOCKER_REGISTRY-}dockerworker
+    build:
+      context: .
+      dockerfile: src/Docker.Worker/Dockerfile
+
+  docker.web:
+    image: ${DOCKER_REGISTRY-}dockerweb
+    build:
+      context: .
+      dockerfile: src/Docker.Web/Dockerfile
+  
+  docker.mssql:
+    image: "mcr.microsoft.com/mssql/server"
+    ports: 
+        - "11433:1433"
+    environment:
+      SA_PASSWORD: "yourStrong(!)Password"
+      ACCEPT_EULA: "Y"
+
+  docker.rabbitmq:
+    image: "masstransit/rabbitmq"
+    ports: 
+        - "15672:15672"
+        - "5672:5672"
