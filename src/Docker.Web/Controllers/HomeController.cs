@@ -1,4 +1,6 @@
-﻿using Docker.Web.Models;
+﻿using Docker.Data;
+using Docker.Data.Repositories;
+using Docker.Web.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
@@ -13,16 +15,19 @@ namespace Docker.Web.Controllers
     [Authorize]
     public class HomeController : Controller
     {
-        private readonly ILogger<HomeController> _logger;
+        private readonly ILogger _logger;
+        private readonly IProductRepository _productRepository;
 
-        public HomeController(ILogger<HomeController> logger)
+        public HomeController(ILogger<HomeController> logger, IProductRepository productRepository)
         {
             _logger = logger;
+            _productRepository = productRepository;
         }
 
         public IActionResult Index()
         {
-            return View();
+            var products = _productRepository.GetAll();
+            return View(products);
         }
 
         public IActionResult Privacy()
