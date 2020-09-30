@@ -14,7 +14,7 @@ namespace Docker.Core
             
         }
 
-        public static void AddAndConfigureMassTransit(this IServiceCollection services, IConfiguration config, Action<IServiceCollectionBusConfigurator> configure)
+        public static void AddAndConfigureMassTransit(this IServiceCollection services, IConfiguration config, Action<IServiceCollectionBusConfigurator> configure = null)
         {
             services.AddMassTransit(cfg =>
             {
@@ -30,7 +30,7 @@ namespace Docker.Core
                 });
 
                 // Allows the caller to set publishers and consumers
-                configure(cfg);
+                if(configure != null) configure(cfg);
             });
 
             services.AddMassTransitHostedService();

@@ -37,9 +37,10 @@ namespace Docker.Worker
             {
                 services.AddAndConfigureMassTransit(hostContext.Configuration, (cfg) =>
                 {
+                    cfg.AddConsumer<OfferUpdatedEventConsumer>();
                 });
 
-                services.AddHostedService<Worker>();
+                //services.AddHostedService<Worker>();
             });
         }
     }

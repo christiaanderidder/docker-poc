@@ -1,6 +1,8 @@
-﻿using Docker.Data;
+﻿using Docker.Core.Events;
+using Docker.Data;
 using Docker.Data.Repositories;
 using Docker.Web.Models;
+using MassTransit;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
@@ -17,16 +19,21 @@ namespace Docker.Web.Controllers
     {
         private readonly ILogger _logger;
         private readonly IProductRepository _productRepository;
+        private readonly IPublishEndpoint _publishEndpoint;
 
-        public HomeController(ILogger<HomeController> logger, IProductRepository productRepository)
+        public HomeController(ILogger<HomeController> logger, IProductRepository productRepository, IPublishEndpoint publishEndpoint)
         {
             _logger = logger;
             _productRepository = productRepository;
+            _publishEndpoint = publishEndpoint;
         }
 
         public IActionResult Index()
         {
             var products = _productRepository.GetAll();
+
+            _publishEndpoint.Publish(new OfferUpdatedEvent() { Price = 10, Stock = 15 });
+
             return View(products);
         }
 

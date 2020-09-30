@@ -21,6 +21,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Docker.Core\Docker.Core.csproj" />
     <ProjectReference Include="..\Docker.Data\Docker.Data.csproj" />
   </ItemGroup>
 

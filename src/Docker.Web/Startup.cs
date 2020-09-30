@@ -1,3 +1,4 @@
+using Docker.Core;
 using Docker.Data;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.AzureAD.UI;
@@ -42,6 +43,8 @@ namespace Docker.Web
                 options.Filters.Add(new AuthorizeFilter(policy));
             });
             services.AddRazorPages();
+
+            services.AddAndConfigureMassTransit(Configuration);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
