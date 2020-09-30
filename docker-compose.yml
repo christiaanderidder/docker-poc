@@ -6,12 +6,18 @@ services:
     build:
       context: .
       dockerfile: src/Docker.Worker/Dockerfile
+    depends_on:
+      - docker.mssql
+      - docker.rabbitmq
 
   docker.web:
     image: ${DOCKER_REGISTRY-}dockerweb
     build:
       context: .
       dockerfile: src/Docker.Web/Dockerfile
+    depends_on:
+      - docker.mssql
+      - docker.rabbitmq
   
   docker.mssql:
     image: "mcr.microsoft.com/mssql/server"
