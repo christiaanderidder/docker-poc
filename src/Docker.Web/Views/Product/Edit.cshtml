@@ -1,0 +1,30 @@
+﻿@{
+    ViewData["Title"] = "Products";
+}
+
+@model ProductEditViewModel
+
+<form method="post" asp-controller="Product" asp-action="Edit">
+    <div asp-validation-summary="All"></div>
+    <div class="mb-3">
+        <label asp-for="Name" class="form-label">Name</label>
+        <input asp-for="Name" class="form-control" />
+        <div class="invalid-feedback" asp-validation-for="Name"></div>
+    </div>
+    <div class="mb-3">
+        <label asp-for="Description" asp-invalid="" class="form-label">Description</label>
+        <textarea asp-for="Description" class="form-control"></textarea>
+        <div class="invalid-feedback" asp-validation-for="Description"></div>
+    </div>
+    <div class="mb-3">
+        <label asp-for="Price" class="form-label">Price</label>
+        <input asp-for="Price" class="form-control" />
+        <div class="invalid-feedback" asp-validation-for="Price"></div>
+    </div>
+    <div class="mb-3">
+        <label asp-for="Stock" class="form-label">Stock</label>
+        <input asp-for="Stock" class="form-control" />
+        <div class="invalid-feedback" asp-validation-for="Stock"></div>
+    </div>
+    <button type="submit" class="btn btn-primary">Submit</button>
+</form>
