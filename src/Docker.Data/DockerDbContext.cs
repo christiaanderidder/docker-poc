@@ -4,6 +4,8 @@ using Microsoft.Extensions.Configuration;
 using System;
 using System.Linq;
 using System.Runtime.CompilerServices;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace Docker.Data
 {
@@ -20,26 +22,30 @@ namespace Docker.Data
 
         public override int SaveChanges()
         {
-            var trackedEntries = ChangeTracker.Entries();
-            var newEntries = trackedEntries.Where(e => e.State == EntityState.Added).Select(e => e.Entity).OfType<BaseEntity>().Cast<BaseEntity>();
-            var updatedEntries = trackedEntries.Where(e => e.State == EntityState.Modified).Select(e => e.Entity).OfType<BaseEntity>().Cast<BaseEntity>();
-
-            foreach(var newEntry in newEntries)
-            {
-                if (newEntry == null) continue;
-
-                newEntry.CreatedAt = DateTimeOffset.Now;
-                newEntry.UpdatedAt = DateTimeOffset.Now;
-            }
-
-            foreach(var updatedEntry in updatedEntries)
-            {
-                if (updatedEntry == null) continue;
-
-                updatedEntry.UpdatedAt = DateTimeOffset.Now;
-            }
+            SetTimestamps();
 
             return base.SaveChanges();
+        }
+
+        public override int SaveChanges(bool acceptAllChangesOnSuccess)
+        {
+            SetTimestamps();
+
+            return base.SaveChanges(acceptAllChangesOnSuccess);
+        }
+
+        public override Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
+        {
+            SetTimestamps();
+
+            return base.SaveChangesAsync(cancellationToken);
+        }
+
+        public override Task<int> SaveChangesAsync(bool acceptAllChangesOnSuccess, CancellationToken cancellationToken = default)
+        {
+            SetTimestamps();
+
+            return base.SaveChangesAsync(acceptAllChangesOnSuccess, cancellationToken); 
         }
 
         protected override void OnConfiguring(DbContextOptionsBuilder options) => options.UseSqlServer(_configuration.GetConnectionString("Database"));
@@ -56,6 +62,28 @@ namespace Docker.Data
         public void Initialize()
         {
             Database.Migrate();
+        }
+
+        private void SetTimestamps()
+        {
+            var trackedEntries = ChangeTracker.Entries();
+            var newEntries = trackedEntries.Where(e => e.State == EntityState.Added).Select(e => e.Entity).OfType<BaseEntity>().Cast<BaseEntity>();
+            var updatedEntries = trackedEntries.Where(e => e.State == EntityState.Modified).Select(e => e.Entity).OfType<BaseEntity>().Cast<BaseEntity>();
+
+            foreach (var newEntry in newEntries)
+            {
+                if (newEntry == null) continue;
+
+                newEntry.CreatedAt = DateTimeOffset.Now;
+                newEntry.UpdatedAt = DateTimeOffset.Now;
+            }
+
+            foreach (var updatedEntry in updatedEntries)
+            {
+                if (updatedEntry == null) continue;
+
+                updatedEntry.UpdatedAt = DateTimeOffset.Now;
+            }
         }
     }
 }
