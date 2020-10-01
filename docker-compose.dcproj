@@ -5,7 +5,7 @@
     <DockerTargetOS>Linux</DockerTargetOS>
     <ProjectGuid>64531ff4-af21-4367-947a-8c2d0ee0f78a</ProjectGuid>
     <DockerLaunchAction>LaunchBrowser</DockerLaunchAction>
-    <DockerServiceUrl>{Scheme}://localhost:{ServicePort}</DockerServiceUrl>
+    <DockerServiceUrl>{Scheme}://localhost:8443</DockerServiceUrl>
     <DockerServiceName>docker.web</DockerServiceName>
   </PropertyGroup>
   <ItemGroup>
