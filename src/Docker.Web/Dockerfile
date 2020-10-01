@@ -7,9 +7,9 @@ EXPOSE 443
 
 FROM mcr.microsoft.com/dotnet/sdk:5.0-buster-slim AS build
 WORKDIR /src
-COPY ["src/appsettings.*", "src/Docker.Web/"]
 COPY ["src/Docker.Web/Docker.Web.csproj", "src/Docker.Web/"]
 COPY ["src/Docker.Data/Docker.Data.csproj", "src/Docker.Data/"]
+COPY ["src/Docker.Core/Docker.Core.csproj", "src/Docker.Core/"]
 RUN dotnet restore "src/Docker.Web/Docker.Web.csproj"
 COPY . .
 WORKDIR "/src/src/Docker.Web"
