@@ -6,6 +6,7 @@ services:
     build:
       context: .
       dockerfile: src/Docker.Worker/Dockerfile
+    container_name: Docker.Worker
     depends_on:
       - docker.mssql
       - docker.rabbitmq
@@ -15,6 +16,10 @@ services:
     build:
       context: .
       dockerfile: src/Docker.Web/Dockerfile
+    ports:
+      - "8080:80"
+      - "8443:443"
+    container_name: Docker.Web
     depends_on:
       - docker.mssql
       - docker.rabbitmq
