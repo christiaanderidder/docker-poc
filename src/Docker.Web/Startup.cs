@@ -83,7 +83,7 @@ namespace Docker.Web
             using (var serviceScope = app.ApplicationServices.GetRequiredService<IServiceScopeFactory>().CreateScope())
             using (var context = serviceScope.ServiceProvider.GetService<DockerDbContext>())
             {
-                context.Database.Migrate();
+                context.Initialize();
             }
         }
     }

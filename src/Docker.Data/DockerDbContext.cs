@@ -26,5 +26,10 @@ namespace Docker.Data
                 new Product { Id = 3, Name = "Product 3", Description = "Third product", Price = 20, CreatedAt = DateTimeOffset.Now, UpdatedAt = DateTimeOffset.Now }
             );
         }
+
+        public void Initialize()
+        {
+            Database.Migrate();
+        }
     }
 }

@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Docker.Data.Migrations
 {
     [DbContext(typeof(DockerDbContext))]
-    [Migration("20200929190112_InitialCreate")]
+    [Migration("20201001114512_InitialCreate")]
     partial class InitialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -49,6 +49,35 @@ namespace Docker.Data.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Products");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            CreatedAt = new DateTimeOffset(new DateTime(2020, 10, 1, 13, 45, 12, 294, DateTimeKind.Unspecified).AddTicks(302), new TimeSpan(0, 2, 0, 0, 0)),
+                            Description = "First product",
+                            Name = "Product 1",
+                            Price = 10m,
+                            UpdatedAt = new DateTimeOffset(new DateTime(2020, 10, 1, 13, 45, 12, 295, DateTimeKind.Unspecified).AddTicks(4603), new TimeSpan(0, 2, 0, 0, 0))
+                        },
+                        new
+                        {
+                            Id = 2,
+                            CreatedAt = new DateTimeOffset(new DateTime(2020, 10, 1, 13, 45, 12, 295, DateTimeKind.Unspecified).AddTicks(4927), new TimeSpan(0, 2, 0, 0, 0)),
+                            Description = "Second product",
+                            Name = "Product 2",
+                            Price = 15m,
+                            UpdatedAt = new DateTimeOffset(new DateTime(2020, 10, 1, 13, 45, 12, 295, DateTimeKind.Unspecified).AddTicks(4935), new TimeSpan(0, 2, 0, 0, 0))
+                        },
+                        new
+                        {
+                            Id = 3,
+                            CreatedAt = new DateTimeOffset(new DateTime(2020, 10, 1, 13, 45, 12, 295, DateTimeKind.Unspecified).AddTicks(4938), new TimeSpan(0, 2, 0, 0, 0)),
+                            Description = "Third product",
+                            Name = "Product 3",
+                            Price = 20m,
+                            UpdatedAt = new DateTimeOffset(new DateTime(2020, 10, 1, 13, 45, 12, 295, DateTimeKind.Unspecified).AddTicks(4941), new TimeSpan(0, 2, 0, 0, 0))
+                        });
                 });
 #pragma warning restore 612, 618
         }
