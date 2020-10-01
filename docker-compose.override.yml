@@ -3,6 +3,7 @@ services:
   docker.worker:
     volumes:
       - ${APPDATA}/Microsoft/UserSecrets:/root/.microsoft/usersecrets:ro
+      - .:/src
     environment:
       - DOTNET_ENVIRONMENT=Development
   docker.web:

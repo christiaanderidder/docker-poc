@@ -1,6 +1,5 @@
 using Docker.Core;
 using Docker.Worker.Consumers;
-using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using System;
 using System.Diagnostics;
@@ -33,15 +32,17 @@ namespace Docker.Worker
 
         public static IHostBuilder CreateHostBuilder(string[] args)
         {
-            return Host.CreateDefaultBuilder(args).ConfigureServices((hostContext, services) =>
-            {
-                services.AddAndConfigureMassTransit(hostContext.Configuration, (cfg) =>
+            return Host.CreateDefaultBuilder(args)
+                .ConfigureAppConfiguration((ctx, cfg) => AppConfiguration.ConfigureJsonConfig(ctx.HostingEnvironment, cfg))
+                .ConfigureServices((hostContext, services) =>
                 {
-                    cfg.AddConsumer<OfferUpdatedEventConsumer>();
-                });
+                    services.AddAndConfigureMassTransit(hostContext.Configuration, (cfg) =>
+                    {
+                        cfg.AddConsumer<OfferUpdatedEventConsumer>();
+                    });
 
-                //services.AddHostedService<Worker>();
-            });
+                    //services.AddHostedService<Worker>();
+                });
         }
     }
 }
