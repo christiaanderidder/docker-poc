@@ -15,9 +15,6 @@ services:
     build:
       context: .
       dockerfile: src/Docker.Web/Dockerfile
-    ports:
-      - "8080:80"
-      - "8443:443"
     depends_on:
       - docker.mssql
       - docker.rabbitmq
