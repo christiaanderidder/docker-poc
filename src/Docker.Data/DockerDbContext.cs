@@ -2,6 +2,8 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using System;
+using System.Linq;
+using System.Runtime.CompilerServices;
 
 namespace Docker.Data
 {
@@ -15,6 +17,30 @@ namespace Docker.Data
         }
 
         public DbSet<Product> Products { get; set; }
+
+        public override int SaveChanges()
+        {
+            var trackedEntries = ChangeTracker.Entries();
+            var newEntries = trackedEntries.Where(e => e.State == EntityState.Added).Select(e => e.Entity).OfType<BaseEntity>().Cast<BaseEntity>();
+            var updatedEntries = trackedEntries.Where(e => e.State == EntityState.Modified).Select(e => e.Entity).OfType<BaseEntity>().Cast<BaseEntity>();
+
+            foreach(var newEntry in newEntries)
+            {
+                if (newEntry == null) continue;
+
+                newEntry.CreatedAt = DateTimeOffset.Now;
+                newEntry.UpdatedAt = DateTimeOffset.Now;
+            }
+
+            foreach(var updatedEntry in updatedEntries)
+            {
+                if (updatedEntry == null) continue;
+
+                updatedEntry.UpdatedAt = DateTimeOffset.Now;
+            }
+
+            return base.SaveChanges();
+        }
 
         protected override void OnConfiguring(DbContextOptionsBuilder options) => options.UseSqlServer(_configuration.GetConnectionString("Database"));
 
