@@ -2,7 +2,7 @@ version: '3.4'
 
 services:
   docker-poc-worker:
-    image: ${DOCKER_REGISTRY-}docker-poc-worker
+    image: christiaanderidder/docker-poc-worker
     build:
       context: ../
       dockerfile: src/Docker.Worker/Dockerfile
@@ -12,7 +12,7 @@ services:
       - docker-poc-rabbitmq
 
   docker-poc-web:
-    image: ${DOCKER_REGISTRY-}docker-poc-web
+    image: christiaanderidder/docker-poc-web
     build:
       context: ../
       dockerfile: src/Docker.Web/Dockerfile
