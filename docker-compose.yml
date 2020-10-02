@@ -16,9 +16,6 @@ services:
     build:
       context: .
       dockerfile: src/Docker.Web/Dockerfile
-    ports:
-      - "8080:80"
-      - "8443:443"
     container_name: Docker.Web
     depends_on:
       - docker-poc-mssql
@@ -35,7 +32,15 @@ services:
 
   docker-poc-rabbitmq:
     image: "masstransit/rabbitmq"
-    ports: 
-      - "15672:15672"
-      - "5672:5672"
     container_name: Docker.RabbitMq
+
+  docker-poc-nginx:
+    image: ${DOCKER_REGISTRY-}docker-poc-nginx
+    build:
+      context: ./nginx
+      dockerfile: ./Dockerfile
+    ports:
+      - "8443:443"
+    container_name: Docker.Nginx
+    depends_on:
+        - docker-poc-web
