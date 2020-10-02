@@ -6,7 +6,7 @@
     <ProjectGuid>64531ff4-af21-4367-947a-8c2d0ee0f78a</ProjectGuid>
     <DockerLaunchAction>LaunchBrowser</DockerLaunchAction>
     <DockerServiceUrl>{Scheme}://localhost:{ServicePort}</DockerServiceUrl>
-    <DockerServiceName>docker.web</DockerServiceName>
+    <DockerServiceName>docker-poc-web</DockerServiceName>
   </PropertyGroup>
   <ItemGroup>
     <None Include="docker-compose.override.yml">

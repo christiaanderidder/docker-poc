@@ -1,18 +1,18 @@
 version: '3.4'
 
 services:
-  docker.worker:
-    image: ${DOCKER_REGISTRY-}dockerworker
+  docker-poc-worker:
+    image: ${DOCKER_REGISTRY-}docker-poc-worker
     build:
       context: .
       dockerfile: src/Docker.Worker/Dockerfile
     container_name: Docker.Worker
     depends_on:
-      - docker.mssql
-      - docker.rabbitmq
+      - docker-poc-mssql
+      - docker-poc-rabbitmq
 
-  docker.web:
-    image: ${DOCKER_REGISTRY-}dockerweb
+  docker-poc-web:
+    image: ${DOCKER_REGISTRY-}docker-poc-web
     build:
       context: .
       dockerfile: src/Docker.Web/Dockerfile
@@ -21,10 +21,10 @@ services:
       - "8443:443"
     container_name: Docker.Web
     depends_on:
-      - docker.mssql
-      - docker.rabbitmq
+      - docker-poc-mssql
+      - docker-poc-rabbitmq
   
-  docker.mssql:
+  docker-poc-mssql:
     image: "mcr.microsoft.com/mssql/server"
     ports: 
       - "11433:1433"
@@ -33,7 +33,7 @@ services:
       ACCEPT_EULA: "Y"
     container_name: Docker.Mssql
 
-  docker.rabbitmq:
+  docker-poc-rabbitmq:
     image: "masstransit/rabbitmq"
     ports: 
       - "15672:15672"

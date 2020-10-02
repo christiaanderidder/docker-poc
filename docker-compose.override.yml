@@ -1,12 +1,12 @@
 version: '3.4'
 services:
-  docker.worker:
+  docker-poc-worker:
     volumes:
       - ${APPDATA}/Microsoft/UserSecrets:/root/.microsoft/usersecrets:ro
       - .:/src
     environment:
       - DOTNET_ENVIRONMENT=Development
-  docker.web:
+  docker-poc-web:
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
       - ASPNETCORE_URLS=https://+:443;http://+:80
