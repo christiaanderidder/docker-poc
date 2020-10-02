@@ -3,7 +3,7 @@ services:
   docker-poc-worker:
     volumes:
       - ${APPDATA}/Microsoft/UserSecrets:/root/.microsoft/usersecrets:ro
-      - .:/src
+      - ..:/src
     environment:
       - DOTNET_ENVIRONMENT=Development
   docker-poc-web:

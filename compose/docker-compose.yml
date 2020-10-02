@@ -4,7 +4,7 @@ services:
   docker-poc-worker:
     image: ${DOCKER_REGISTRY-}docker-poc-worker
     build:
-      context: .
+      context: ../
       dockerfile: src/Docker.Worker/Dockerfile
     container_name: Docker.Worker
     depends_on:
@@ -14,7 +14,7 @@ services:
   docker-poc-web:
     image: ${DOCKER_REGISTRY-}docker-poc-web
     build:
-      context: .
+      context: ../
       dockerfile: src/Docker.Web/Dockerfile
     ports:
       - "8080:80"
