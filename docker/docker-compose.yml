@@ -28,7 +28,9 @@ services:
       - "11433:1433"
     environment:
       SA_PASSWORD: "yourStrong(!)Password"
-      ACCEPT_EULA: "Y"
+      # Any value works. See: https://docs.microsoft.com/en-us/sql/linux/sql-server-linux-configure-environment-variables?view=sql-server-ver15
+      # Use x, because Y breaks conversion using kompose. See: https://github.com/kubernetes/kompose/issues/1253
+      ACCEPT_EULA: "x"
 
   docker-poc-rabbitmq:
     image: "masstransit/rabbitmq"
