@@ -11,8 +11,8 @@ metadata:
   name: docker-poc-mssql
 spec:
   ports:
-  - name: "11433"
-    port: 11433
+  - name: "1433"
+    port: 1433
     targetPort: 1433
   selector:
     io.kompose.service: docker-poc-mssql
