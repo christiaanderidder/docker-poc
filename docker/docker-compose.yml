@@ -21,6 +21,8 @@ services:
     depends_on:
       - docker-poc-mssql
       - docker-poc-rabbitmq
+    labels:
+      kompose.service.type: LoadBalancer
   
   docker-poc-mssql:
     image: "mcr.microsoft.com/mssql/server"
@@ -37,3 +39,5 @@ services:
     ports: 
       - "15672:15672"
       - "5672:5672"
+    labels:
+      kompose.service.type: LoadBalancer
