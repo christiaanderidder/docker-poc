@@ -28,7 +28,7 @@ spec:
       containers:
       - env:
         - name: ACCEPT_EULA
-          value: "Y"
+          value: x
         - name: SA_PASSWORD
           value: yourStrong(!)Password
         image: mcr.microsoft.com/mssql/server
