@@ -4,11 +4,11 @@ metadata:
   name: docker-poc
 build:
   artifacts:
-    - image: docker-poc-web
+    - image: christiaanderidder/docker-poc-web
       context: ../
       docker: 
         dockerfile: src/Docker.Web/Dockerfile
-    - image: docker-poc-worker
+    - image: christiaanderidder/docker-poc-worker
       context: ../
       docker: 
         dockerfile: src/Docker.Worker/Dockerfile
