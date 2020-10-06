@@ -1,6 +1,7 @@
 apiVersion: networking.k8s.io/v1beta1
 kind: Ingress
 metadata:
+  namespace: docker-poc
   name: docker-poc-ingress
   annotations:
     # Fix 502 on redirect from Azure AD login

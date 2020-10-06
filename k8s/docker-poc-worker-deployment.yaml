@@ -1,36 +1,23 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  annotations:
-    kompose.cmd: C:\ProgramData\chocolatey\lib\kubernetes-kompose\tools\kompose.exe
-      convert -f .\docker\docker-compose.yml -o .\k8s
-    kompose.version: 1.21.0 (992df58d8)
-  creationTimestamp: null
-  labels:
-    io.kompose.service: docker-poc-worker
+  namespace: docker-poc
   name: docker-poc-worker
+  labels:
+    app: docker-poc-worker
 spec:
-  replicas: 1
+  replicas: 2
   selector:
     matchLabels:
-      io.kompose.service: docker-poc-worker
+      app: docker-poc-worker
   strategy: {}
   template:
     metadata:
-      annotations:
-        kompose.cmd: C:\ProgramData\chocolatey\lib\kubernetes-kompose\tools\kompose.exe
-          convert -f .\docker\docker-compose.yml -o .\k8s
-        kompose.version: 1.21.0 (992df58d8)
-      creationTimestamp: null
       labels:
-        io.kompose.service: docker-poc-worker
+        app: docker-poc-worker
     spec:
       containers:
-      - image: christiaanderidder/docker-poc-worker
-        imagePullPolicy: ""
-        name: docker-poc-worker
+      - name: docker-poc-worker
+        image: christiaanderidder/docker-poc-worker
+        imagePullPolicy: IfNotPresent
         resources: {}
-      restartPolicy: Always
-      serviceAccountName: ""
-      volumes: null
-status: {}
