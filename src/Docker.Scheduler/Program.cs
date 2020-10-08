@@ -1,14 +1,15 @@
 using Docker.Core;
-using Docker.Worker.Consumers;
-using MassTransit;
+using Docker.Scheduler.Jobs;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Quartz;
 using System;
 using System.Diagnostics;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Threading.Tasks;
 
-namespace Docker.Worker
+namespace Docker.Scheduler
 {
     public class Program
     {
@@ -28,7 +29,6 @@ namespace Docker.Worker
             {
                 await builder.RunConsoleAsync();
             }
-
         }
 
         public static IHostBuilder CreateHostBuilder(string[] args)
@@ -39,11 +39,16 @@ namespace Docker.Worker
                 {
                     services.AddAndConfigureMassTransit(hostContext.Configuration, (cfg) =>
                     {
-                        cfg.AddConsumer<RecurringJobConsumer>();
-                        cfg.AddConsumer<OfferUpdatedEventConsumer>();
+
                     });
-                    
-                    services.AddMassTransitHostedService();
+
+                    services.AddQuartz(cfg =>
+                    {
+                        cfg.UseMicrosoftDependencyInjectionJobFactory();
+                    });
+
+                    services.AddSingleton<MassTransitRecurringJobPublisher>();
+                    services.AddHostedService<TaskScheduler>();
                 });
         }
     }

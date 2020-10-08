@@ -10,6 +10,15 @@ services:
       - docker-poc-mssql
       - docker-poc-rabbitmq
 
+  docker-poc-scheduler:
+    image: christiaanderidder/docker-poc-scheduler
+    build:
+      context: ../
+      dockerfile: src/Docker.Scheduler/Dockerfile
+    depends_on:
+      - docker-poc-mssql
+      - docker-poc-rabbitmq
+
   docker-poc-web:
     image: christiaanderidder/docker-poc-web
     build:

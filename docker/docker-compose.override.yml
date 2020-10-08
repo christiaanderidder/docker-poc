@@ -6,6 +6,12 @@ services:
       - ..:/src
     environment:
       - DOTNET_ENVIRONMENT=Development
+  docker-poc-scheduler:
+    volumes:
+      - ${APPDATA}/Microsoft/UserSecrets:/root/.microsoft/usersecrets:ro
+      - ..:/src
+    environment:
+      - DOTNET_ENVIRONMENT=Development
   docker-poc-web:
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
