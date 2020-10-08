@@ -8,6 +8,7 @@ namespace Docker.Core.Configuration
 {
     public class RabbitMqConfiguration
     {
-        public string Host { get; set; }
+        public string? Host { get; set; }
+        public string? SchedulerEndpoint { get; set; }
     }
 }
