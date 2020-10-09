@@ -1,4 +1,5 @@
 using Docker.Core;
+using Docker.Data;
 using Docker.Scheduler.Jobs;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -37,6 +38,9 @@ namespace Docker.Scheduler
                 .ConfigureAppConfiguration((ctx, cfg) => AppConfiguration.ConfigureJsonConfig(ctx.HostingEnvironment, cfg))
                 .ConfigureServices((hostContext, services) =>
                 {
+                    services.AddDockerCore();
+                    services.AddDockerData();
+
                     services.AddAndConfigureMassTransit(hostContext.Configuration, (cfg) =>
                     {
 

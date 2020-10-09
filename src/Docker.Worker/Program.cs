@@ -1,4 +1,5 @@
 using Docker.Core;
+using Docker.Data;
 using Docker.Worker.Consumers;
 using MassTransit;
 using Microsoft.Extensions.Hosting;
@@ -37,6 +38,8 @@ namespace Docker.Worker
                 .ConfigureAppConfiguration((ctx, cfg) => AppConfiguration.ConfigureJsonConfig(ctx.HostingEnvironment, cfg))
                 .ConfigureServices((hostContext, services) =>
                 {
+                    services.AddDockerCore();
+                    services.AddDockerData();
                     services.AddAndConfigureMassTransit(hostContext.Configuration, (cfg) =>
                     {
                         cfg.AddConsumer<RecurringJobConsumer>();

@@ -36,6 +36,7 @@ namespace Docker.Web
             services.AddAuthentication(AzureADDefaults.AuthenticationScheme)
                 .AddAzureAD(options => Configuration.Bind("AzureAd", options));
 
+            services.AddDockerCore();
             services.AddDockerData();
 
             services.AddControllersWithViews(options =>
