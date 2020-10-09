@@ -39,6 +39,12 @@ namespace Docker.Web
             services.AddDockerCore();
             services.AddDockerData();
 
+            services.AddRouting(options =>
+            {
+                options.LowercaseQueryStrings = true;
+                options.LowercaseUrls = true;
+            });
+
             services.AddControllersWithViews(options =>
             {
                 var policy = new AuthorizationPolicyBuilder()
