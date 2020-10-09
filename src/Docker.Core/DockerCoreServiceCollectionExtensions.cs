@@ -42,8 +42,8 @@ namespace Docker.Core
                     var receiveObserver = new MessageObserver();
 
                     //cfg.ConnectSendAuditObservers(auditStore);
-                    cfg.ConnectConsumeAuditObserver(auditStore);
-                    cfg.ConnectReceiveObserver(receiveObserver);
+                    //cfg.ConnectConsumeAuditObserver(auditStore);
+                    //cfg.ConnectReceiveObserver(receiveObserver);
 
                     // Automatically configure endpoints for all consumers
                     cfg.ConfigureEndpoints(context);
