@@ -5,7 +5,7 @@ services:
     image: christiaanderidder/docker-poc-worker
     build:
       context: ../
-      dockerfile: src/Docker.Worker/Dockerfile
+      dockerfile: src/Worker/Docker.Worker/Dockerfile
     depends_on:
       - docker-poc-mssql
       - docker-poc-rabbitmq
@@ -14,7 +14,7 @@ services:
     image: christiaanderidder/docker-poc-scheduler
     build:
       context: ../
-      dockerfile: src/Docker.Scheduler/Dockerfile
+      dockerfile: src/Worker/Docker.Scheduler/Dockerfile
     depends_on:
       - docker-poc-mssql
       - docker-poc-rabbitmq
@@ -23,7 +23,7 @@ services:
     image: christiaanderidder/docker-poc-web
     build:
       context: ../
-      dockerfile: src/Docker.Web/Dockerfile
+      dockerfile: src/Web/Docker.Web/Dockerfile
     ports:
       - "8080:80"
       - "8443:443"
@@ -35,7 +35,7 @@ services:
     image: christiaanderidder/docker-poc-api
     build:
       context: ../
-      dockerfile: src/Docker.Api/Dockerfile
+      dockerfile: src/Web/Docker.Api/Dockerfile
     ports:
       - "9080:80"
       - "9443:443"
@@ -47,7 +47,7 @@ services:
     image: christiaanderidder/docker-poc-oauth
     build:
       context: ../
-      dockerfile: src/Docker.OAuth/Dockerfile
+      dockerfile: src/Web/Docker.OAuth/Dockerfile
     ports:
       - "7080:80"
       - "7443:443"

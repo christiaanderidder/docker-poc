@@ -5,12 +5,12 @@ WORKDIR /app
 
 FROM mcr.microsoft.com/dotnet/sdk:5.0-buster-slim AS build
 WORKDIR /src
-COPY ["src/Docker.Worker/Docker.Worker.csproj", "src/Docker.Worker/"]
-COPY ["src/Docker.Data/Docker.Data.csproj", "src/Docker.Data/"]
-COPY ["src/Docker.Core/Docker.Core.csproj", "src/Docker.Core/"]
-RUN dotnet restore "src/Docker.Worker/Docker.Worker.csproj"
+COPY ["src/Worker/Docker.Worker/Docker.Worker.csproj", "src/Worker/Docker.Worker/"]
+COPY ["src/Shared/Docker.Data/Docker.Data.csproj", "src/Shared/Docker.Data/"]
+COPY ["src/Shared/Docker.Core/Docker.Core.csproj", "src/Shared/Docker.Core/"]
+RUN dotnet restore "src/Worker/Docker.Worker/Docker.Worker.csproj"
 COPY . .
-WORKDIR "/src/src/Docker.Worker"
+WORKDIR "/src/src/Worker/Docker.Worker"
 RUN dotnet build "Docker.Worker.csproj" -c Release -o /app/build
 
 FROM build AS publish

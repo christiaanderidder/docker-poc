@@ -5,13 +5,13 @@
     <Nullable>enable</Nullable>
     <UserSecretsId>docker-poc</UserSecretsId>
     <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
-    <DockerfileContext>..\..</DockerfileContext>
-    <DockerComposeProjectPath>..\..\compose\docker-compose.dcproj</DockerComposeProjectPath>
+    <DockerfileContext>..\..\..</DockerfileContext>
+    <DockerComposeProjectPath>..\..\..\compose\docker-compose.dcproj</DockerComposeProjectPath>
   </PropertyGroup>
 
   <ItemGroup>
-    <Content Include="..\..\appsettings.json" Link="appsettings.json" CopyToOutputDirectory="PreserveNewest" />
-    <Content Include="..\..\appsettings.Development.json" Link="appsettings.Development.json" CopyToOutputDirectory="PreserveNewest" />
+    <Content Include="..\..\..\appsettings.json" Link="appsettings.json" CopyToOutputDirectory="PreserveNewest" />
+    <Content Include="..\..\..\appsettings.Development.json" Link="appsettings.Development.json" CopyToOutputDirectory="PreserveNewest" />
   </ItemGroup>
 
   <ItemGroup>
@@ -27,7 +27,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Docker.Core\Docker.Core.csproj" />
-    <ProjectReference Include="..\Docker.Data\Docker.Data.csproj" />
+    <ProjectReference Include="..\..\Shared\Docker.Core\Docker.Core.csproj" />
+    <ProjectReference Include="..\..\Shared\Docker.Data\Docker.Data.csproj" />
   </ItemGroup>
 </Project>

@@ -5,12 +5,12 @@ WORKDIR /app
 
 FROM mcr.microsoft.com/dotnet/sdk:5.0-buster-slim AS build
 WORKDIR /src
-COPY ["src/Docker.Scheduler/Docker.Scheduler.csproj", "src/Docker.Scheduler/"]
-COPY ["src/Docker.Data/Docker.Data.csproj", "src/Docker.Data/"]
-COPY ["src/Docker.Core/Docker.Core.csproj", "src/Docker.Core/"]
-RUN dotnet restore "src/Docker.Scheduler/Docker.Scheduler.csproj"
+COPY ["src/Worker/Docker.Scheduler/Docker.Scheduler.csproj", "src/Worker/Docker.Scheduler/"]
+COPY ["src/Shared/Docker.Data/Docker.Data.csproj", "src/Shared/Docker.Data/"]
+COPY ["src/Shared/Docker.Core/Docker.Core.csproj", "src/Shared/Docker.Core/"]
+RUN dotnet restore "src/Worker/Docker.Scheduler/Docker.Scheduler.csproj"
 COPY . .
-WORKDIR "/src/src/Docker.Scheduler"
+WORKDIR "/src/src/Worker/Docker.Scheduler"
 RUN dotnet build "Docker.Scheduler.csproj" -c Release -o /app/build
 
 FROM build AS publish

@@ -7,12 +7,12 @@ EXPOSE 443
 
 FROM mcr.microsoft.com/dotnet/sdk:5.0-buster-slim AS build
 WORKDIR /src
-COPY ["src/Docker.OAuth/Docker.OAuth.csproj", "src/Docker.OAuth/"]
-COPY ["src/Docker.Data/Docker.Data.csproj", "src/Docker.Data/"]
-COPY ["src/Docker.Core/Docker.Core.csproj", "src/Docker.Core/"]
-RUN dotnet restore "src/Docker.Web/Docker.Web.csproj"
+COPY ["src/Web/Docker.OAuth/Docker.OAuth.csproj", "src/Web/Docker.OAuth/"]
+COPY ["src/Shared/Docker.Data/Docker.Data.csproj", "src/Shared/Docker.Data/"]
+COPY ["src/Shared/Docker.Core/Docker.Core.csproj", "src/Shared/Docker.Core/"]
+RUN dotnet restore "src/Web/Docker.OAuth/Docker.OAuth.csproj"
 COPY . .
-WORKDIR "/src/src/Docker.OAuth"
+WORKDIR "/src/src/Web/Docker.OAuth"
 RUN dotnet build "Docker.OAuth.csproj" -c Release -o /app/build
 
 FROM build AS publish

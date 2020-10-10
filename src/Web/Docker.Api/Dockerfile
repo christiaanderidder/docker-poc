@@ -7,12 +7,12 @@ EXPOSE 443
 
 FROM mcr.microsoft.com/dotnet/sdk:5.0-buster-slim AS build
 WORKDIR /src
-COPY ["src/Docker.Api/Docker.Api.csproj", "src/Docker.Api/"]
-COPY ["src/Docker.Data/Docker.Data.csproj", "src/Docker.Data/"]
-COPY ["src/Docker.Core/Docker.Core.csproj", "src/Docker.Core/"]
-RUN dotnet restore "src/Docker.Web/Docker.Web.csproj"
+COPY ["src/Web/Docker.Api/Docker.Api.csproj", "src/Web/Docker.Api/"]
+COPY ["src/Shared/Docker.Data/Docker.Data.csproj", "src/Shared/Docker.Data/"]
+COPY ["src/Shared/Docker.Core/Docker.Core.csproj", "src/Shared/Docker.Core/"]
+RUN dotnet restore "src/Web/Docker.Api/Docker.Api.csproj"
 COPY . .
-WORKDIR "/src/src/Docker.Api"
+WORKDIR "/src/src/Web/Docker.Api"
 RUN dotnet build "Docker.Api.csproj" -c Release -o /app/build
 
 FROM build AS publish
