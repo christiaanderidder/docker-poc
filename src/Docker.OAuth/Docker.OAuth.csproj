@@ -3,7 +3,7 @@
   <PropertyGroup>
     <TargetFramework>net5.0</TargetFramework>
     <Nullable>enable</Nullable>
-    <UserSecretsId>497F9BD4-844F-41C7-AC0D-76179ACF5EBA</UserSecretsId>
+    <UserSecretsId>docker-poc</UserSecretsId>
     <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
     <DockerfileContext>..\..</DockerfileContext>
     <DockerComposeProjectPath>..\..\compose\docker-compose.dcproj</DockerComposeProjectPath>
