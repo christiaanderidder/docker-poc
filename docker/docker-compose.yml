@@ -42,6 +42,18 @@ services:
     depends_on:
       - docker-poc-mssql
       - docker-poc-rabbitmq
+
+  docker-poc-oauth:
+    image: christiaanderidder/docker-poc-oauth
+    build:
+      context: ../
+      dockerfile: src/Docker.OAuth/Dockerfile
+    ports:
+      - "7080:80"
+      - "7443:443"
+    depends_on:
+      - docker-poc-mssql
+      - docker-poc-rabbitmq
   
   docker-poc-mssql:
     image: "mcr.microsoft.com/mssql/server"
