@@ -3,13 +3,13 @@ services:
   docker-poc-worker:
     volumes:
       - ${APPDATA}/Microsoft/UserSecrets:/root/.microsoft/usersecrets:ro
-      - ..:/src
+      - ../config:/root/.config
     environment:
       - DOTNET_ENVIRONMENT=Development
   docker-poc-scheduler:
     volumes:
       - ${APPDATA}/Microsoft/UserSecrets:/root/.microsoft/usersecrets:ro
-      - ..:/src
+      - ../config:/root/.config
     environment:
       - DOTNET_ENVIRONMENT=Development
   docker-poc-web:
@@ -21,6 +21,7 @@ services:
     volumes:
       - ${APPDATA}/Microsoft/UserSecrets:/root/.microsoft/usersecrets:ro
       - ${APPDATA}/ASP.NET/Https:/root/.aspnet/https:ro
+      - ../config:/root/.config
   docker-poc-api:
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
@@ -29,6 +30,7 @@ services:
     volumes:
       - ${APPDATA}/Microsoft/UserSecrets:/root/.microsoft/usersecrets:ro
       - ${APPDATA}/ASP.NET/Https:/root/.aspnet/https:ro
+      - ../config:/root/.config
   docker-poc-oauth:
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
@@ -37,3 +39,4 @@ services:
     volumes:
       - ${APPDATA}/Microsoft/UserSecrets:/root/.microsoft/usersecrets:ro
       - ${APPDATA}/ASP.NET/Https:/root/.aspnet/https:ro
+      - ../config:/root/.config
