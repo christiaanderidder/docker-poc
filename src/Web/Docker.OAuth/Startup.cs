@@ -32,6 +32,15 @@ namespace Docker.OAuth
                 .AddInMemoryClients(InMemoryConfiguration.ApiClients())
                 .AddInMemoryApiResources(InMemoryConfiguration.ApiResources())
                 .AddInMemoryApiScopes(InMemoryConfiguration.ApiScopes());
+
+            services.AddRouting(options =>
+            {
+                options.LowercaseQueryStrings = true;
+                options.LowercaseUrls = true;
+            });
+
+            services.AddControllersWithViews();
+            services.AddRazorPages();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -42,16 +51,32 @@ namespace Docker.OAuth
                 app.UseDeveloperExceptionPage();
             }
 
+            if (env.IsDevelopment())
+            {
+                app.UseDeveloperExceptionPage();
+            }
+            else
+            {
+                app.UseExceptionHandler("/Home/Error");
+                // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
+                app.UseHsts();
+            }
+            app.UseHttpsRedirection();
+            app.UseStaticFiles();
+
             app.UseRouting();
 
             app.UseIdentityServer();
 
+            app.UseAuthentication();
+            app.UseAuthorization();
+
             app.UseEndpoints(endpoints =>
             {
-                endpoints.MapGet("/", async context =>
-                {
-                    await context.Response.WriteAsync("Hello World!");
-                });
+                endpoints.MapControllerRoute(
+                    name: "default",
+                    pattern: "{controller=Home}/{action=Index}/{id?}");
+                endpoints.MapRazorPages();
             });
         }
     }
