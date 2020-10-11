@@ -1,10 +1,13 @@
 using Docker.Core;
 using Docker.Data;
+using IdentityServer4.AccessTokenValidation;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Authorization;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -32,11 +35,38 @@ namespace Docker.Api
         {
             services.AddDockerCore();
             services.AddDockerData();
-            services.AddControllers();
+
+            services.AddRouting(options =>
+            {
+                options.LowercaseQueryStrings = true;
+                options.LowercaseUrls = true;
+            });
+
+            services.AddControllers(options =>
+            {
+                // require scope1 or scope2
+                var policy = ScopePolicy.Create("product.read", "product.write");
+                options.Filters.Add(new AuthorizeFilter(policy));
+            });
+
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "Docker.Api", Version = "v1" });
             });
+
+            services.AddAuthentication(IdentityServerAuthenticationDefaults.AuthenticationScheme)
+                .AddIdentityServerAuthentication(options =>
+                {
+                    // base-address of your identityserver
+                    options.Authority = "https://docker-poc-oauth";
+
+                    // name of the API resource
+                    options.ApiName = "product";
+                    options.ApiSecret = "secret";
+
+                    options.EnableCaching = true;
+                    options.CacheDuration = TimeSpan.FromMinutes(10); // that's the default
+                });
 
             services.Configure<ForwardedHeadersOptions>(options =>
             {
@@ -61,6 +91,7 @@ namespace Docker.Api
 
             app.UseRouting();
 
+            app.UseAuthentication();
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
