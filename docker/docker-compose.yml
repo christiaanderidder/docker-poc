@@ -57,8 +57,11 @@ services:
   
   docker-poc-mssql:
     image: "mcr.microsoft.com/mssql/server"
+    user: root
     ports: 
       - "11433:1433"
+    volumes:
+      - docker-poc-mssql-data:/var/opt/mssql/data
     environment:
       SA_PASSWORD: "yourStrong(!)Password"
       # Any value works. See: https://docs.microsoft.com/en-us/sql/linux/sql-server-linux-configure-environment-variables?view=sql-server-ver15
@@ -70,3 +73,6 @@ services:
     ports: 
       - "15672:15672"
       - "5672:5672"
+
+volumes:
+  docker-poc-mssql-data:
