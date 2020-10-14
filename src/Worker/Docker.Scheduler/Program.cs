@@ -38,7 +38,7 @@ namespace Docker.Scheduler
                 .ConfigureAppConfiguration((ctx, cfg) => AppConfiguration.ConfigureJsonConfig(ctx.HostingEnvironment, cfg))
                 .ConfigureServices((hostContext, services) =>
                 {
-                    services.AddDockerCore();
+                    services.AddDockerCore(hostContext.Configuration);
                     services.AddDockerData();
 
                     services.AddAndConfigureMassTransit(hostContext.Configuration, (cfg) =>

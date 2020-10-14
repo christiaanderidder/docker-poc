@@ -14,14 +14,15 @@ namespace Docker.Core
 {
     public static class DockerCoreServiceCollectionExtensions
     {
-        public static void AddDockerCore(this IServiceCollection services)
+        public static void AddDockerCore(this IServiceCollection services, IConfiguration config)
         {
-
+            services.Configure<IdentityServerConfiguration>(config.GetSection(IdentityServerConfiguration.Section));
+            services.Configure<RabbitMqConfiguration>(config.GetSection(RabbitMqConfiguration.Section));
         }
 
         public static void AddAndConfigureMassTransit(this IServiceCollection services, IConfiguration config, Action<IServiceCollectionBusConfigurator>? configure = null)
         {
-            var rabbitMqConfig = config.GetSection("RabbitMq").Get<RabbitMqConfiguration>();
+            var rabbitMqConfig = config.GetSection(RabbitMqConfiguration.Section).Get<RabbitMqConfiguration>();
 
             if (rabbitMqConfig == null || rabbitMqConfig.SchedulerEndpoint == null) return;
 
