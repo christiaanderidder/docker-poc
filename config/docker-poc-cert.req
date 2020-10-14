@@ -1,0 +1,28 @@
+[ req ]
+default_bits = 4096
+default_days = 3652
+distinguished_name = req_distinguished_name
+req_extensions = req_ext
+x509_extensions = 509_ext
+prompt = no
+
+[ req_distinguished_name ]
+countryName = NL
+stateOrProvinceName = Zuid-Holland
+localityName = Leiden
+organizationName = ChannelEngine.com B.V.
+commonName = localhost
+
+[ req_ext ]
+subjectAltName = @alt_names
+
+[ 509_ext ]
+subjectAltName = @alt_names
+
+[alt_names]
+DNS.1 = host.docker.internal
+DNS.2 = docker-poc-web
+DNS.3 = docker-poc-api
+DNS.4 = docker-poc-oauth
+DNS.5 = docker-poc-mssql
+DNS.6 = docker-poc-rabbitmq

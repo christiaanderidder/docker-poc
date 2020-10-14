@@ -29,7 +29,7 @@ namespace Docker.OAuth
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddIdentityServer()
-                .AddSigningCredential(new X509Certificate2(Path.Combine(AppConfiguration.GetConfigPath(_env), "docker-poc-oauth.pfx")))
+                .AddSigningCredential(new X509Certificate2(Path.Combine(AppConfiguration.GetConfigPath(_env), "docker-poc-cert.pfx"), "selfsigned-pwd"))
                 .AddTestUsers(InMemoryConfiguration.Users().ToList())
                 .AddInMemoryClients(InMemoryConfiguration.ApiClients())
                 .AddInMemoryApiResources(InMemoryConfiguration.ApiResources())
