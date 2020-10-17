@@ -1,7 +1,9 @@
+using Docker.Api.Auth;
 using Docker.Core;
 using Docker.Core.Configuration;
 using Docker.Data;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpOverrides;
@@ -62,6 +64,9 @@ namespace Docker.Api
                         };
                     }
                 });
+
+            services.AddSingleton<IAuthorizationHandler, HasScopeHandler>();
+            services.AddSingleton<IAuthorizationPolicyProvider, HasScopeAuthorizationPolicyProvider>();
 
             services.Configure<ForwardedHeadersOptions>(options =>
             {

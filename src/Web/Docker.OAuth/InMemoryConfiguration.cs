@@ -11,13 +11,13 @@ namespace Docker.OAuth
     {
         public static IEnumerable<ApiResource> ApiResources() => new[]
         {
-            new ApiResource("product", "Product")
+            new ApiResource("products", "Products")
         };
 
         public static IEnumerable<ApiScope> ApiScopes() => new[]
         {
-            new ApiScope("product.read", "Read Product"),
-            new ApiScope("product.write", "Write Product")
+            new ApiScope("products.read", "Read Products"),
+            new ApiScope("products.write", "Write Products")
         };
 
         public static IEnumerable<Client> ApiClients() => new[]
@@ -27,7 +27,7 @@ namespace Docker.OAuth
                 ClientId = "testclient",
                 ClientSecrets = new [] { new Secret("secret".Sha256()) },
                 AllowedGrantTypes = GrantTypes.ResourceOwnerPasswordAndClientCredentials,
-                AllowedScopes = new [] { "product.read", "product.write" },
+                AllowedScopes = new [] { "products.read", "products.write" },
             }
         };
 
