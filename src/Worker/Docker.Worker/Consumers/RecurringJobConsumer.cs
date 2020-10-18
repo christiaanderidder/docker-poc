@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using System.Threading.Tasks;
 using Docker.Core.Jobs;
 using Docker.Data.Repositories;
@@ -22,7 +23,11 @@ namespace Docker.Worker.Consumers
         {
             _logger.LogInformation($"Recurring job received: {context.Message.Message}");
 
-            switch(context.Message.Type)
+            if (DateTime.Now.Ticks % 5 == 0)
+            {
+                throw new EverythingIsOnFireException("🔥🔥🔥 Something terrible has happened 🔥🔥🔥");
+            }
+            switch (context.Message.Type)
             {
                 case RecurringJobType.ImportOrders:
                     ImportOrders();
@@ -45,6 +50,22 @@ namespace Docker.Worker.Consumers
             var product = _productRepository.GetAll().First();
             product.Stock += 3;
             _productRepository.Persist(product);
+        }
+    }
+
+    public class EverythingIsOnFireException: Exception
+    {
+        public EverythingIsOnFireException(string message): base(message)
+        {
+
+        }
+
+        public EverythingIsOnFireException()
+        {
+        }
+
+        public EverythingIsOnFireException(string message, Exception innerException) : base(message, innerException)
+        {
         }
     }
 }
