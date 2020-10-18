@@ -1,14 +1,11 @@
 ﻿using System;
-using System.IO;
 using Docker.Core.Configuration;
 using Docker.Core.Messaging;
 using MassTransit;
-using MassTransit.Audit;
 using MassTransit.ExtensionsDependencyInjectionIntegration;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
-using RabbitMQ.Client;
+using Microsoft.Extensions.Logging;
 
 namespace Docker.Core
 {
@@ -34,13 +31,16 @@ namespace Docker.Core
 
                 cfg.UsingRabbitMq((context, cfg) =>
                 {
+
                     cfg.Host(rabbitMqConfig.Host);
 
                     cfg.UseMessageScheduler(schedulerEndpoint);
-
+                    var loggingService = context.GetService<ILoggerFactory>().CreateLogger<LoggingReceiveMessageObserver>();
+                    var loggingObserver = new LoggingReceiveMessageObserver(loggingService);
                     var auditStore = new MessageAuditStore();
                     var receiveObserver = new MessageObserver();
 
+                    cfg.ConnectReceiveObserver(loggingObserver);
                     //cfg.ConnectSendAuditObservers(auditStore);
                     //cfg.ConnectConsumeAuditObserver(auditStore);
                     //cfg.ConnectReceiveObserver(receiveObserver);
