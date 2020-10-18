@@ -13,6 +13,7 @@
   <ItemGroup>
     <Content Include="..\..\..\config\appsettings.json" Link="appsettings.json" CopyToOutputDirectory="PreserveNewest" />
     <Content Include="..\..\..\config\appsettings.Development.json" Link="appsettings.Development.json" CopyToOutputDirectory="PreserveNewest" />
+    <Content Include="..\..\..\config\docker-poc-cert.pfx" Link="docker-poc-cert.pfx" CopyToOutputDirectory="PreserveNewest" />
   </ItemGroup>
 
   <ItemGroup>

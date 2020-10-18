@@ -11,6 +11,8 @@ spec:
   tls:
   - hosts:
     - www.docker-poc.local
+    - api.docker-poc.local
+    - login.odcker-poc.local
     - rabbitmq.docker-poc.local
     secretName: docker-poc-tls
   rules:
@@ -19,6 +21,18 @@ spec:
       paths:
       - backend:
           serviceName: docker-poc-web
+          servicePort: 80
+  - host: api.docker-poc.local
+    http:
+      paths:
+      - backend:
+          serviceName: docker-poc-api
+          servicePort: 80
+  - host: login.docker-poc.local
+    http:
+      paths:
+      - backend:
+          serviceName: docker-poc-oauth
           servicePort: 80
   - host: rabbitmq.docker-poc.local
     http:

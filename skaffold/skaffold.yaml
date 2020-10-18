@@ -7,11 +7,19 @@ build:
     - image: christiaanderidder/docker-poc-web
       context: ../
       docker: 
-        dockerfile: src/Docker.Web/Dockerfile
+        dockerfile: src/Web/Docker.Web/Dockerfile
+    - image: christiaanderidder/docker-poc-api
+      context: ../
+      docker: 
+        dockerfile: src/Web/Docker.Api/Dockerfile
+    - image: christiaanderidder/docker-poc-oauth
+      context: ../
+      docker: 
+        dockerfile: src/Web/Docker.OAuth/Dockerfile
     - image: christiaanderidder/docker-poc-worker
       context: ../
       docker: 
-        dockerfile: src/Docker.Worker/Dockerfile
+        dockerfile: src/Worker/Docker.Worker/Dockerfile
 deploy:
   kubectl:
     manifests:

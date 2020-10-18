@@ -1,8 +1,10 @@
 using Docker.Core;
+using Docker.Core.Configuration;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.HttpOverrides;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using System;
@@ -17,10 +19,12 @@ namespace Docker.OAuth
 {
     public class Startup
     {
+        private readonly IConfiguration _configuration;
         private readonly IWebHostEnvironment _env;
 
-        public Startup(IWebHostEnvironment env)
+        public Startup(IConfiguration configuration, IWebHostEnvironment env)
         {
+            _configuration = configuration;
             _env = env;
         }
 
@@ -28,8 +32,13 @@ namespace Docker.OAuth
         // For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddIdentityServer()
-                .AddSigningCredential(new X509Certificate2(Path.Combine(AppConfiguration.GetConfigPath(_env), "docker-poc-oauth.pfx")))
+            var identityServerConfig = _configuration.GetSection(IdentityServerConfiguration.Section).Get<IdentityServerConfiguration>();
+
+            services.AddIdentityServer(options =>
+            {
+                options.IssuerUri = identityServerConfig.Host;
+            })
+                .AddSigningCredential(new X509Certificate2(Path.Combine(AppConfiguration.GetConfigPath(_env), "docker-poc-cert.pfx"), "selfsigned-pwd"))
                 .AddTestUsers(InMemoryConfiguration.Users().ToList())
                 .AddInMemoryClients(InMemoryConfiguration.ApiClients())
                 .AddInMemoryApiResources(InMemoryConfiguration.ApiResources())

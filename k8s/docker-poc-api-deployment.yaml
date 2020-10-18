@@ -1,0 +1,26 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  namespace: docker-poc
+  name: docker-poc-api
+  labels:
+    app: docker-poc-api
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: docker-poc-api
+  strategy: {}
+  template:
+    metadata:
+      labels:
+        app: docker-poc-api
+    spec:
+      containers:
+      - name: docker-poc-api
+        image: christiaanderidder/docker-poc-api
+        imagePullPolicy: IfNotPresent
+        ports:
+        - containerPort: 80
+        - containerPort: 443
+        resources: {}

@@ -31,7 +31,9 @@ namespace Docker.Core
 
         public static string GetConfigPath(IHostEnvironment env)
         {
-            return IsDocker() ? "/root/.config" : Path.Combine(env.ContentRootPath, "../../../config");
+            if(env.IsDevelopment()) return IsDocker() ? "/root/.config" : Path.Combine(env.ContentRootPath, "../../../config");
+            
+            return env.ContentRootPath;
         }
     }
 }

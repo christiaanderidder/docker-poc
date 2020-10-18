@@ -6,11 +6,10 @@ using System.Threading.Tasks;
 
 namespace Docker.Core.Configuration
 {
-    public class RabbitMqConfiguration
+    public class IdentityServerConfiguration
     {
-        public const string Section = "RabbitMq";
+        public const string Section = "IdentityServer";
 
         public string? Host { get; set; }
-        public string? SchedulerEndpoint { get; set; }
     }
 }

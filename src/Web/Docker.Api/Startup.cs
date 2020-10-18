@@ -1,40 +1,40 @@
+using Docker.Api.Auth;
 using Docker.Core;
+using Docker.Core.Configuration;
 using Docker.Data;
-using IdentityServer4.AccessTokenValidation;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpOverrides;
-using Microsoft.AspNetCore.HttpsPolicy;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Authorization;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Net;
-using System.Threading.Tasks;
+using System.Net.Http;
 
 namespace Docker.Api
 {
     public class Startup
     {
-        public Startup(IConfiguration configuration)
+        public Startup(IConfiguration configuration, IWebHostEnvironment environment)
         {
-            Configuration = configuration;
+            _configuration = configuration;
+            _environment = environment;
         }
 
-        public IConfiguration Configuration { get; }
+        private readonly IConfiguration _configuration;
+        private readonly IWebHostEnvironment _environment;
 
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddDockerCore();
+            services.AddDockerCore(_configuration);
             services.AddDockerData();
+
+            var identityServerConfig = _configuration.GetSection(IdentityServerConfiguration.Section).Get<IdentityServerConfiguration>();
 
             services.AddRouting(options =>
             {
@@ -42,31 +42,31 @@ namespace Docker.Api
                 options.LowercaseUrls = true;
             });
 
-            services.AddControllers(options =>
-            {
-                // require scope1 or scope2
-                var policy = ScopePolicy.Create("product.read", "product.write");
-                options.Filters.Add(new AuthorizeFilter(policy));
-            });
+            services.AddControllers();
 
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "Docker.Api", Version = "v1" });
             });
 
-            services.AddAuthentication(IdentityServerAuthenticationDefaults.AuthenticationScheme)
-                .AddIdentityServerAuthentication(options =>
+            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+                .AddJwtBearer(options =>
                 {
-                    // base-address of your identityserver
-                    options.Authority = "https://docker-poc-oauth";
+                    options.Authority = identityServerConfig.Host;
+                    options.TokenValidationParameters.ValidateAudience = false;
 
-                    // name of the API resource
-                    options.ApiName = "product";
-                    options.ApiSecret = "secret";
-
-                    options.EnableCaching = true;
-                    options.CacheDuration = TimeSpan.FromMinutes(10); // that's the default
+                    // Allow self-signed certificates in Development
+                    if (_environment.IsDevelopment())
+                    {
+                        options.BackchannelHttpHandler = new HttpClientHandler()
+                        {
+                            ServerCertificateCustomValidationCallback = HttpClientHandler.DangerousAcceptAnyServerCertificateValidator
+                        };
+                    }
                 });
+
+            services.AddSingleton<IAuthorizationHandler, HasScopeHandler>();
+            services.AddSingleton<IAuthorizationPolicyProvider, HasScopeAuthorizationPolicyProvider>();
 
             services.Configure<ForwardedHeadersOptions>(options =>
             {
@@ -80,14 +80,17 @@ namespace Docker.Api
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
+            app.UseForwardedHeaders();
+
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
-                app.UseSwagger();
-                app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "Docker.Api v1"));
             }
 
             app.UseHttpsRedirection();
+
+            app.UseSwagger();
+            app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "Docker.Api v1"));
 
             app.UseRouting();
 
