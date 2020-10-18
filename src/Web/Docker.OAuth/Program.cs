@@ -19,6 +19,7 @@ namespace Docker.OAuth
 
         public static IHostBuilder CreateHostBuilder(string[] args) =>
             Host.CreateDefaultBuilder(args)
+                .ConfigureLogging()
                 .ConfigureAppConfiguration((ctx, cfg) => AppConfiguration.ConfigureJsonConfig(ctx.HostingEnvironment, cfg))
                 .ConfigureWebHostDefaults(webBuilder =>
                 {

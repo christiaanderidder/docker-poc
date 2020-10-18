@@ -35,6 +35,7 @@ namespace Docker.Scheduler
         public static IHostBuilder CreateHostBuilder(string[] args)
         {
             return Host.CreateDefaultBuilder(args)
+                .ConfigureLogging()
                 .ConfigureAppConfiguration((ctx, cfg) => AppConfiguration.ConfigureJsonConfig(ctx.HostingEnvironment, cfg))
                 .ConfigureServices((hostContext, services) =>
                 {
