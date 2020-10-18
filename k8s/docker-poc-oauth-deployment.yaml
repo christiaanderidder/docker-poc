@@ -1,0 +1,26 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  namespace: docker-poc
+  name: docker-poc-oauth
+  labels:
+    app: docker-poc-oauth
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: docker-poc-oauth
+  strategy: {}
+  template:
+    metadata:
+      labels:
+        app: docker-poc-oauth
+    spec:
+      containers:
+      - name: docker-poc-oauth
+        image: christiaanderidder/docker-poc-oauth
+        imagePullPolicy: IfNotPresent
+        ports:
+        - containerPort: 80
+        - containerPort: 443
+        resources: {}
