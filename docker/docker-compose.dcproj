@@ -9,10 +9,21 @@
     <DockerServiceName>docker-poc-web</DockerServiceName>
   </PropertyGroup>
   <ItemGroup>
+    <None Include=".env" />
     <None Include="docker-compose.override.yml">
       <DependentUpon>docker-compose.yml</DependentUpon>
     </None>
     <None Include="docker-compose.yml" />
     <None Include="..\.dockerignore" />
+    <None Include="elk\elasticsearch\config\elasticsearch.yml" />
+    <None Include="elk\elasticsearch\Dockerfile" />
+    <None Include="elk\kibana\config\kibana.yml" />
+    <None Include="elk\kibana\Dockerfile" />
+    <None Include="elk\logstash\config\logstash.yml" />
+    <None Include="elk\logstash\Dockerfile" />
+    <None Include="elk\logstash\pipeline\logstash.conf" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="elk\logstash\plugins\" />
   </ItemGroup>
 </Project>
