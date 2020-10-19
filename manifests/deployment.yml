@@ -1,0 +1,19 @@
+apiVersion : apps/v1
+kind: Deployment
+metadata:
+  name: dockerpocweb 
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: dockerpocweb
+  template:
+    metadata:
+      labels:
+        app: dockerpocweb 
+    spec:
+      containers:
+        - name: dockerpocweb 
+          image: channelengine.azurecr.io/dockerpocweb
+          ports:
+          - containerPort: 80
