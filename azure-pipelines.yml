@@ -37,7 +37,8 @@ stages:
     steps:
     - task: Bash@3
       inputs:
-        filePath: config/request-cert.sh
+        workingDirectory: config
+        filePath: request-cert.sh
     - task: DockerCompose@0
       displayName: Build services
       inputs:
