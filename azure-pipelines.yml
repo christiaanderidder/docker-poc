@@ -91,6 +91,4 @@ stages:
                 $(Pipeline.Workspace)/k8s/**.yaml
               imagePullSecrets: |
                 $(imagePullSecret)
-              containers: |
-                $(containerRegistry)/$(imageRepository):$(tag)
 
