@@ -12,8 +12,10 @@ variables:
 
   # Container registry service connection established during pipeline creation
   dockerRegistryServiceConnection: '2041e0d4-f66b-4731-b515-2c29bb626c4b'
-  imageRepository: 'dockerpocweb'
+  
+  imageRepository: 'docker-poc-web'
   containerRegistry: 'channelengine.azurecr.io'
+
   dockerfilePath: '**/Dockerfile'
   tag: '$(Build.BuildId)'
   imagePullSecret: 'channelengine40638557-auth'
@@ -37,6 +39,7 @@ stages:
         command: buildAndPush
         repository: $(imageRepository)
         dockerfile: $(dockerfilePath)
+        buildContext: $(Build.SourcesDirectory)
         containerRegistry: $(dockerRegistryServiceConnection)
         tags: |
           $(tag)
