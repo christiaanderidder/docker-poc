@@ -1,0 +1,23 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  namespace: docker-poc
+  name: docker-poc-scheduler
+  labels:
+    app: docker-poc-scheduler
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: docker-poc-scheduler
+  strategy: {}
+  template:
+    metadata:
+      labels:
+        app: docker-poc-scheduler
+    spec:
+      containers:
+      - name: docker-poc-scheduler
+        image: christiaanderidder/docker-poc-scheduler
+        imagePullPolicy: IfNotPresent
+        resources: {}
