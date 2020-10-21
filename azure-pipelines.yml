@@ -10,17 +10,21 @@ resources:
 
 variables:
 
+  # Docker compose
+  azureSubscription: 'Microsoft Partner Network(15464c5e-dadb-4cbd-a5e5-d6637369c2bf)'
+  azureContainerRegistry: '{"loginServer":"channelengine.azurecr.io", "id" : "/subscriptions/15464c5e-dadb-4cbd-a5e5-d6637369c2bf/resourceGroups/Kubernetes/providers/Microsoft.ContainerRegistry/registries/channelengine"}'
+  dockerComposeFile: 'docker/docker-compose.yml'
+  projectName: $(Build.Repository.Name)
+
   # Container registry service connection established during pipeline creation
   dockerRegistryServiceConnection: '2041e0d4-f66b-4731-b515-2c29bb626c4b'
-  imageRepository: 'dockerpocweb'
-  containerRegistry: 'channelengine.azurecr.io'
-  dockerfilePath: '**/Dockerfile'
   tag: '$(Build.BuildId)'
+  imageRepository: 'docker-poc-web'
+  containerRegistry: 'channelengine.azurecr.io'
   imagePullSecret: 'channelengine40638557-auth'
 
   # Agent VM image name
   vmImageName: 'ubuntu-latest'
-  
 
 stages:
 - stage: Build
@@ -31,17 +35,31 @@ stages:
     pool:
       vmImage: $(vmImageName)
     steps:
-    - task: Docker@2
-      displayName: Build and push an image to container registry
+    - task: Bash@3
       inputs:
-        command: buildAndPush
-        repository: $(imageRepository)
-        dockerfile: $(dockerfilePath)
-        containerRegistry: $(dockerRegistryServiceConnection)
-        tags: |
-          $(tag)
-          
-    - upload: manifests
+        workingDirectory: config
+        filePath: config/request-cert.sh
+    - task: DockerCompose@0
+      displayName: Build services
+      inputs:
+        action: Build services
+        containerregistrytype: 'Azure Container Registry'
+        azureSubscription: $(azureSubscription)
+        azureContainerRegistry: $(azureContainerRegistry)
+        dockerComposeFile: $(dockerComposeFile)
+        additionalImageTags: $(tag)
+        projectName: $(projectName)
+    - task: DockerCompose@0
+      displayName: Push services
+      inputs:
+        action: Push services
+        containerregistrytype: 'Azure Container Registry'
+        azureSubscription: $(azureSubscription)
+        azureContainerRegistry: $(azureContainerRegistry)
+        dockerComposeFile: $(dockerComposeFile)
+        additionalImageTags: $(tag)
+        projectName: $(projectName)
+    - publish: manifests
       artifact: manifests
 
 - stage: Deploy
@@ -70,10 +88,7 @@ stages:
             inputs:
               action: deploy
               manifests: |
-                $(Pipeline.Workspace)/manifests/deployment.yml
-                $(Pipeline.Workspace)/manifests/service.yml
+                $(Pipeline.Workspace)/k8s/**.yaml
               imagePullSecrets: |
                 $(imagePullSecret)
-              containers: |
-                $(containerRegistry)/$(imageRepository):$(tag)
 
