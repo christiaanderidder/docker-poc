@@ -30,6 +30,7 @@ services:
     depends_on:
       - docker-poc-mssql
       - docker-poc-rabbitmq
+      - docker-poc-logstash
 
   docker-poc-api:
     image: christiaanderidder/docker-poc-api
@@ -42,6 +43,7 @@ services:
     depends_on:
       - docker-poc-mssql
       - docker-poc-rabbitmq
+      - docker-poc-logstash
 
   docker-poc-oauth:
     image: christiaanderidder/docker-poc-oauth
@@ -54,6 +56,7 @@ services:
     depends_on:
       - docker-poc-mssql
       - docker-poc-rabbitmq
+      - docker-poc-logstash
   
   docker-poc-mssql:
     image: "mcr.microsoft.com/mssql/server"
@@ -74,5 +77,69 @@ services:
       - "15672:15672"
       - "5672:5672"
 
+  docker-poc-elasticsearch:
+    build:
+      context: elk/elasticsearch/
+      args:
+        ELK_VERSION: $ELK_VERSION
+    volumes:
+      - type: bind
+        source: ./elk/elasticsearch/config/elasticsearch.yml
+        target: /usr/share/elasticsearch/config/elasticsearch.yml
+        read_only: true
+      - type: volume
+        source: elasticsearch
+        target: /usr/share/elasticsearch/data
+    ports:
+      - "9200:9200"
+      - "9300:9300"
+    environment:
+      ES_JAVA_OPTS: "-Xmx256m -Xms256m"
+      ELASTIC_PASSWORD: changeme
+      # Use single node discovery in order to disable production mode and avoid bootstrap checks
+      # see https://www.elastic.co/guide/en/elasticsearch/reference/current/bootstrap-checks.html
+      discovery.type: single-node
+
+  docker-poc-logstash:
+    command:
+      - --config.reload.automatic
+    build:
+      context: elk/logstash/
+      args:
+        ELK_VERSION: $ELK_VERSION
+    volumes:
+      - type: bind
+        source: ./elk/logstash/config/logstash.yml
+        target: /usr/share/logstash/config/logstash.yml
+        read_only: true
+      - type: bind
+        source: ./elk/logstash/pipeline
+        target: /usr/share/logstash/pipeline
+        read_only: true
+    ports:
+      - "5000:5000/tcp"
+      - "5000:5000/udp"
+      - "9600:9600"
+    environment:
+      LS_JAVA_OPTS: "-Xmx256m -Xms256m"
+    depends_on:
+      - docker-poc-elasticsearch
+
+  docker-poc-kibana:
+    build:
+      context: elk/kibana/
+      args:
+        ELK_VERSION: $ELK_VERSION
+    volumes:
+      - type: bind
+        source: ./elk/kibana/config/kibana.yml
+        target: /usr/share/kibana/config/kibana.yml
+        read_only: true
+    ports:
+      - "5601:5601"
+    depends_on:
+      - docker-poc-elasticsearch
+
 volumes:
   docker-poc-mssql-data:
+  elasticsearch:
